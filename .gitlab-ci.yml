@@ -2,6 +2,7 @@ image: python
 
 stages:
 - test
+- lint
 
 tests:
   stage: test

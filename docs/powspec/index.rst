@@ -7,4 +7,7 @@ This is the documentation for powspec.
 Reference/API
 =============
 
-.. automodapi:: powspec
+.. automodapi:: powspec.powspec
+.. automodapi:: powspec.utils.apod
+.. automodapi:: powspec.utils.generator
+
