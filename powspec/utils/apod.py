@@ -3,7 +3,7 @@ from scipy import signal
 
 from astropy.convolution import CustomKernel, convolve_fft
 
-__all__ = ['shrink_mask', 'fft_2d_hanning']
+__all__ = ["shrink_mask", "fft_2d_hanning"]
 
 
 def shrink_mask(mask, kernel):

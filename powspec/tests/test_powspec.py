@@ -2,6 +2,7 @@ import pytest
 import numpy as np
 import numpy.testing as npt
 
+
 def test_powspec():
     from ..powspec import power_spectral_density as powspec
     from ..utils.generator import gen_pkfield, Pk
@@ -34,7 +35,7 @@ def test_powspec_unit():
     import astropy.units as u
 
     from ..powspec import power_spectral_density as powspec
-    from ..utils.generator import gen_pkfield, Pk
+    from ..utils.generator import gen_pkfield
 
     npix = 1024
     nsub = 128
@@ -45,9 +46,9 @@ def test_powspec_unit():
 
     img = gen_pkfield(npix=npix, res=res, alpha=alpha, fknee=1 / u.arcsec) * u.Jy
 
-    with pytest.raises(AssertionError): 
+    with pytest.raises(AssertionError):
         # range must be a quantity
-        dummy = powspec(img, res=res, range=(0, 1))
+        powspec(img, res=res, range=(0, 1))
 
     bins = np.linspace(2, nsub // 2, nsub // 2 - 2) / (res * nsub)
     powspec_full, bin_full = powspec(img, res=res, bins=bins)
@@ -73,13 +74,12 @@ def test_powspec_unit():
 
 def test_crosspec():
     from ..powspec import power_spectral_density as powspec, cross_spectral_density as crosspec
-    from ..utils.generator import gen_pkfield, Pk
+    from ..utils.generator import gen_pkfield
 
     npix = 128
     res = 50
     img = gen_pkfield(npix=npix, res=res)
     _powspec, bin_pow = powspec(img, res=res, bins=npix)
-    bin_centers = (bin_pow[1:] + bin_pow[:-1]) / 2
 
     _crosspec, bin_cross = crosspec(img, img, res=res, bins=npix)
 
@@ -87,5 +87,6 @@ def test_crosspec():
     npt.assert_allclose(_powspec, _crosspec)
 
     # plt.close('all')
+    # bin_centers = (bin_pow[1:] + bin_pow[:-1]) / 2
     # plt.loglog(bin_centers[1:], _powspec[1:])
     # plt.loglog(bin_centers[1:], _crosspec[1:])

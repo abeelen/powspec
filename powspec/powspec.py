@@ -3,14 +3,14 @@ import astropy.units as u
 
 from .utils.apod import fft_2d_hanning
 
-__all__ = ['power_spectral_density', 'cross_spectral_density']
+__all__ = ["power_spectral_density", "cross_spectral_density"]
 
 
 def img_to_array(img, apod_size=None):
     """Drop potential unit and mask from input.
 
     Parameters
-    ----------    
+    ----------
     img : array_like or :class:`~astropy.units.quantity.Quantity`
         the input (2D) image
     apod_size: int
@@ -37,7 +37,7 @@ def img_to_array(img, apod_size=None):
             img = np.ma.array(img.data.to(img_unit).value, mask=img.mask)
 
         img = img.filled(0)
-    
+
     return img, img_unit
 
 
@@ -159,8 +159,10 @@ def cross_spectral_density(img1, img2, res=1, bins=100, range=None, apod_size=No
     # Dropping units here to be backward compatible with astropy<4.0
     img1, img1_unit = img_to_array(img1, apod_size=apod_size)
     img2, img2_unit = img_to_array(img2, apod_size=apod_size)
-    
-    assert isinstance(img1_unit, type(img2_unit)), "img2 must be a quantity or a masked quantity when img1 is a quantity or masked quantity"
+
+    assert isinstance(
+        img1_unit, type(img2_unit)
+    ), "img2 must be a quantity or a masked quantity when img1 is a quantity or masked quantity"
     assert img1.shape == img2.shape, "img1 & img2 should have the same shape"
 
     if isinstance(res, u.Quantity):
@@ -199,4 +201,3 @@ def cross_spectral_density(img1, img2, res=1, bins=100, range=None, apod_size=No
     bin_edges = bin_edges * pix_unit ** -1
 
     return hist, bin_edges
-

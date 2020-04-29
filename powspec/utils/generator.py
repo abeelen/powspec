@@ -1,10 +1,12 @@
 import numpy as np
 
-__all__ = ['Pk', 'gen_pkfield']
+__all__ = ["Pk", "gen_pkfield"]
+
 
 def Pk(k, alpha=-11.0 / 3, fknee=1):
     """Simple power law formula"""
     return (k / fknee) ** alpha
+
 
 def gen_pkfield(npix=32, alpha=-11.0 / 3, fknee=1, res=1):
     """Generate a 2D square map with P(k) field"""

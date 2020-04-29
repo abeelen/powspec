@@ -81,5 +81,3 @@ def test_fft_2d_hanning():
         ((shape - 1) + (size - 1) - (apod_size * 2 + 1 - 1)) // 2 + 1,
     )
     npt.assert_allclose(apod[unchanged, unchanged], 1)
-
-
