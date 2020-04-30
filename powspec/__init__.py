@@ -8,9 +8,9 @@ from ._astropy_init import *  # noqa
 # ----------------------------------------------------------------------------
 
 __all__ = []
-from .powspec import *
-from .utils.apod import *
-from .utils.generator import *
+from .powspec import power_spectral_density, cross_spectral_density
+from .utils.apod import shrink_mask, fft_2d_hanning
+from .utils.generator import Pk, gen_pkfield
 # from .example_mod import *   # noqa
 # Then you can be explicit to control what ends up in the namespace,
 # __all__ += ['do_primes']   # noqa
