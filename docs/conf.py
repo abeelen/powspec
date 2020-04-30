@@ -192,3 +192,17 @@ github_issues_url = 'https://github.com/{0}/issues/'.format(setup_cfg['github_pr
 #     dtype, target = line.split(None, 1)
 #     target = target.strip()
 #     nitpick_ignore.append((dtype, six.u(target)))
+
+# --- Sphinx Gallery ---
+extensions += ['sphinx_gallery.gen_gallery']
+sphinx_gallery_conf = {
+    # path to your examples scripts
+    'examples_dirs': '../examples',
+    # path where to save gallery generated examples
+    'gallery_dirs': 'auto_examples',
+    # To auto-generate example sections in the API
+    'doc_module': ('powspec',),
+    # Auto-generated mini-galleries go here
+    'backreferences_dir': 'gen_api',
+    'reference_url': {'powspec': None, }
+}

@@ -1,14 +1,12 @@
-Documentation
-=============
+Powspec
+=======
 
-This is the documentation for powspec.
+The powspec package provides function to compute power and cross spectral density of 2D arrays. Units are properly taken into account
+
 
 .. toctree::
   :maxdepth: 2
-
+  
   powspec/index.rst
 
-.. note:: The layout of this directory is simply a suggestion.  To follow
-          traditional practice, do *not* edit this page, but instead place
-          all documentation for the package inside ``powspec/``.
-          You can follow this practice or choose your own layout.
+
