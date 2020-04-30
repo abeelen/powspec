@@ -5,7 +5,7 @@ Basic Usage of powspec
 
 """
 import matplotlib.pyplot as plt
-
+# sphinx_gallery_thumbnail_path = '_static/demo.png'
 import astropy.units as u
 from astropy.visualization import quantity_support
 
@@ -15,7 +15,7 @@ from powspec.utils.generator import gen_pkfield
 
 quantity_support()
 
-##########################################################################
+# %%
 # Create fake images
 # ------------------
 #
@@ -31,7 +31,7 @@ for alpha in alphas:
         gen_pkfield(npix=1024, alpha=alpha, fknee=0.1 / u.arcmin, res=res) * u.MJy
     )
 
-##########################################################################
+# %%
 # Compute P(k)
 # ------------
 #
@@ -46,10 +46,9 @@ for image in images:
 
 k_mid = np.mean(u.Quantity([k[1:], k[:-1]]), axis=0)
 
-##########################################################################
+# %%
 # Plots
 # -----
-#
 
 fig = plt.figure()
 gs = fig.add_gridspec(ncols=2, nrows=len(alphas))
