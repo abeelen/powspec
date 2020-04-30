@@ -1,11 +1,22 @@
 Power Spectrum
 --------------
 
+This package provides functions to compute power and cross spectral density of 2D arrays. Units are properly taken into account. More information is available in the documentation, avaliable `online at readthedocs.org <http://powspec.rtfd.org>`__.
+
 .. image:: http://img.shields.io/badge/powered%20by-AstroPy-orange.svg?style=flat
     :target: http://www.astropy.org
     :alt: Powered by Astropy Badge
 
+Build and coverage status
+=========================
 
+|Build Status| |Coverage Status| |DOI|
+
+.. |Build Status| image:: https://travis-ci.org/abeelen/powspec.png?branch=master
+   :target: https://travis-ci.org/abeelen/powspec
+.. |Coverage Status| image:: https://coveralls.io/repos/abeelen/powspec/badge.svg?branch=master
+   :target: https://coveralls.io/r/abeelen/powspec?branch=master
+	    
 License
 -------
 

@@ -2,7 +2,7 @@
 Powspec Documentation
 *********************
 
-The powspec package provides function to compute power and cross spectral density of 2D arrays. Units are properly taken into account
+The powspec package provides functions to compute power and cross spectral density of 2D arrays. Units are properly taken into account
 
 
 Quick start
@@ -34,3 +34,4 @@ Reference/API
 =============
 
 .. automodapi:: powspec
+ 
