@@ -10,7 +10,7 @@ This package provides functions to compute power and cross spectral density of 2
 Build and coverage status
 =========================
 
-|Build Status| |Coverage Status| |DOI|
+|Build Status| |Coverage Status|
 
 .. |Build Status| image:: https://travis-ci.org/abeelen/powspec.png?branch=master
    :target: https://travis-ci.org/abeelen/powspec
