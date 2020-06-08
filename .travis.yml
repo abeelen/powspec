@@ -154,10 +154,10 @@ script:
 
 after_success:
     # If coveralls.io is set up for this package, uncomment the two lines below.
-    pip install coveralls coverage
-    coverage combine .tmp/*/.coverage
-    coverage report
-    coveralls
+    - pip install coveralls coverage
+    - coverage combine .tmp/*/.coverage
+    - coverage report
+    - coveralls
     # If codecov is set up for this package, uncomment the two lines below
     # pip install codecov
     # codecov
