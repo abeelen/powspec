@@ -90,3 +90,21 @@ def test_crosspec():
     # bin_centers = (bin_pow[1:] + bin_pow[:-1]) / 2
     # plt.loglog(bin_centers[1:], _powspec[1:])
     # plt.loglog(bin_centers[1:], _crosspec[1:])
+
+
+@pytest.mark.parametrize(
+    "bins,range,expected",
+    [
+        (4, None, (4, None)),
+        (4, 100, (4, 100)),
+        (4, "tight-linear", (np.linspace(0.1, 0.5, 5), None)),
+        (4, "tight-log", (np.logspace(np.log10(0.1), np.log10(0.5), 5), None)),
+    ],
+)
+def test_k_bin_edges(bins, range, expected):
+    from ..powspec import k_bin_edges
+
+    shape = (10, 5)
+    result = k_bin_edges(shape, bins=bins, range=range)
+    npt.assert_equal(result[0], expected[0])
+    assert result[1] == expected[1]

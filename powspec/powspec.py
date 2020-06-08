@@ -41,6 +41,56 @@ def img_to_array(img, apod_size=None):
     return img, img_unit
 
 
+def k_bin_edges(shape, res=1, bins=None, range=None):
+    """Generate proper bins for power spectra.
+
+    Parameters
+    ----------
+    shape : [type]
+        the shape of the image
+    res : float or :class:`~astropy.units.quantity.Quantity`, optional
+        the resolution elements of the image
+    bins : int or sequence of scalars, optional
+        If `bins` is an int, it defines the number of equal-width
+        bins in the given range (10, by default). If `bins` is a
+        sequence, it defines the bin edges, including the rightmost
+        edge, allowing for non-uniform bin widths. (see `~numpy.histogram`)
+    range : (float, float) or str, optional
+        The lower and upper range of the bins.  If not provided, range
+        is simply ``(a.min(), a.max())``. (see `~numpy.histogram`).
+        If `range` is a string from the list below, `k_bin_edges`
+        will use the method choosen to calculate the bins :
+
+        'tight'
+            largest and nyquist scale returned, all method to calculate optimal
+            bin width with `numpy.histogram_bin_edges`.
+
+        'tight-linear'
+            linear spacing between the largest and nyquist scale
+
+        'tight-log'
+            log spacing between the largest and nyquist scale
+
+    Returns
+    -------
+    bins : int or sequence of scalars
+        the corresponding bins
+    range: (float, float) or None
+        the corresponding range
+    """
+    nyquist = 1 / (2 * res)
+    largest_scale = 1 / (np.array(shape).max() * res)
+
+    if range == "tight":
+        return bins, (largest_scale, nyquist)
+    elif range == "tight-linear":
+        return np.linspace(largest_scale, nyquist, bins + 1, endpoint=True), None
+    elif range == "tight-log":
+        return np.logspace(np.log10(largest_scale), np.log10(nyquist), bins + 1, endpoint=True), None
+    else:
+        return bins, range
+
+
 def power_spectral_density(img, res=1, bins=100, range=None, apod_size=None):
     """Return the bin averaged power spectral density of an image
 
@@ -55,8 +105,11 @@ def power_spectral_density(img, res=1, bins=100, range=None, apod_size=None):
         bins in the given range (10, by default). If `bins` is a
         sequence, it defines the bin edges, including the rightmost
         edge, allowing for non-uniform bin widths. (see `~numpy.histogram`)
-    range : (float, float), optional
-        The lower and upper range of the bins. (see `~numpy.histogram`).
+    range : (float, float) or str, optional
+        The lower and upper range of the bins.  If not provided, range
+        is simply ``(a.min(), a.max())``. (see `~numpy.histogram`).
+        If `range` is a string, it defines the method used to calculate the
+        bins, as defined by `k_bin_edges`.
 
     Returns
     -------
@@ -78,6 +131,8 @@ def power_spectral_density(img, res=1, bins=100, range=None, apod_size=None):
     # Dropping units here to be backward compatible with astropy<4.0
     # See nikamap #16
     img, img_unit = img_to_array(img, apod_size=apod_size)
+
+    bins, range = k_bin_edges(img.shape, res=res, bins=bins, range=range)
 
     if isinstance(res, u.Quantity):
         pix_unit = res.unit
@@ -133,8 +188,11 @@ def cross_spectral_density(img1, img2, res=1, bins=100, range=None, apod_size=No
         bins in the given range (10, by default). If `bins` is a
         sequence, it defines the bin edges, including the rightmost
         edge, allowing for non-uniform bin widths. (see `~numpy.histogram`)
-    range : (float, float), optional
-        The lower and upper range of the bins. (see `~numpy.histogram`).
+    range : (float, float) or str, optional
+        The lower and upper range of the bins.  If not provided, range
+        is simply ``(a.min(), a.max())``. (see `~numpy.histogram`).
+        If `range` is a string, it defines the method used to calculate the
+        bins, as defined by `k_bin_edges`.
 
     Returns
     -------
@@ -164,6 +222,8 @@ def cross_spectral_density(img1, img2, res=1, bins=100, range=None, apod_size=No
         img1_unit, type(img2_unit)
     ), "img2 must be a quantity or a masked quantity when img1 is a quantity or masked quantity"
     assert img1.shape == img2.shape, "img1 & img2 should have the same shape"
+
+    bins, range = k_bin_edges(img1.shape, res=res, bins=bins, range=range)
 
     if isinstance(res, u.Quantity):
         pix_unit = res.unit
