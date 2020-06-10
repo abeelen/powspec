@@ -78,15 +78,17 @@ def k_bin_edges(shape, res=1, bins=None, range=None):
     range: (float, float) or None
         the corresponding range
     """
-    nyquist = 1 / (2 * res)
-    largest_scale = 1 / (np.array(shape).max() * res)
+    nyquist = u.Quantity(1 / (2 * res))
+    largest_scale = u.Quantity(1 / (np.array(shape).max() * res))
 
     if range == "tight":
-        return bins, (largest_scale, nyquist)
+        return bins, u.Quantity((largest_scale, nyquist))
     elif range == "tight-linear":
-        return np.linspace(largest_scale, nyquist, bins + 1, endpoint=True), None
+        unit = largest_scale.unit
+        return np.linspace(largest_scale.to(unit).value, nyquist.to(unit).value, bins + 1, endpoint=True) * unit, None
     elif range == "tight-log":
-        return np.logspace(np.log10(largest_scale), np.log10(nyquist), bins + 1, endpoint=True), None
+        unit = largest_scale.unit
+        return np.logspace(np.log10(largest_scale.to(unit).value), np.log10(nyquist.to(unit).value), bins + 1, endpoint=True) * unit, None
     else:
         return bins, range
 
@@ -160,8 +162,8 @@ def power_spectral_density(img, res=1, bins=100, range=None, apod_size=None):
 
     k_freq = np.sqrt(u_freq[:, np.newaxis] ** 2 + v_freq ** 2)
 
-    hist, bin_edges = np.histogram(k_freq, bins=bins, range=range, weights=pow_sqr)
-    norm, _ = np.histogram(k_freq, bins=bins, range=range)
+    norm, bin_edges = np.histogram(k_freq, bins=bins, range=range)
+    hist, bin_edges = np.histogram(k_freq, bins=bin_edges, weights=pow_sqr)
     with np.errstate(invalid="ignore"):
         hist /= norm
 
