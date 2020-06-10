@@ -7,17 +7,19 @@ Basic Usage of powspec
 import matplotlib.pyplot as plt
 # sphinx_gallery_thumbnail_path = '_static/demo.png'
 import astropy.units as u
+from astropy.convolution import Gaussian2DKernel
 from astropy.visualization import quantity_support
 
 import numpy as np
 from powspec.powspec import power_spectral_density
-from powspec.utils.generator import gen_pkfield
+from powspec.utils.generator import gen_pkfield, gen_psffield
+
 
 quantity_support()
 
 # %%
-# Create fake images
-# ------------------
+# Create fake Gaussian field images
+# ---------------------------------
 #
 # Create a list of fake images with different P(k)
 #
@@ -61,3 +63,36 @@ for i, (image, powspec, alpha) in enumerate(zip(images, powspecs, alphas)):
     ax.imshow(image.value, origin="lower")
 
 plt.show()
+
+# %%
+# Create PSF field image
+# ----------------------
+# 
+# Create a fake catalog of sources
+
+n_pix = 1024
+n_sources = 1024*5
+positions = np.random.uniform(0, n_pix, size=(2, n_sources))
+fluxes = np.random.uniform(1, 10, n_sources)
+
+image = gen_psffield(positions, fluxes, n_pix, kernel=Gaussian2DKernel(10), factor=4) * u.Jy / u.beam
+
+# %%
+# Compute P(k)
+# ------------
+#
+# Compute power spectra of each images
+#
+powspec, k = power_spectral_density(image, res=res, range='tight-log', bins=auto)
+
+k_mid = np.mean(u.Quantity([k[1:], k[:-1]]), axis=0)
+
+# %%
+# Plots
+# -----
+
+fig, axes = plt.subplots(ncols=2)
+axes[0].imshow(image.value, origin='lower')
+axes[1].loglog(k_mid, powspec)
+
+fig.show()

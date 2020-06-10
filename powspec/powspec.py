@@ -88,7 +88,9 @@ def k_bin_edges(shape, res=1, bins=None, range=None):
         return np.linspace(largest_scale.to(unit).value, nyquist.to(unit).value, bins + 1, endpoint=True) * unit, None
     elif range == "tight-log":
         unit = largest_scale.unit
-        return np.logspace(np.log10(largest_scale.to(unit).value), np.log10(nyquist.to(unit).value), bins + 1, endpoint=True) * unit, None
+        return np.logspace(np.log10(largest_scale.to(unit).value),
+                           np.log10(nyquist.to(unit).value),
+                           bins + 1, endpoint=True) * unit, None
     else:
         return bins, range
 
