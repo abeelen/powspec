@@ -67,15 +67,16 @@ plt.show()
 # %%
 # Create PSF field image
 # ----------------------
-# 
+#
 # Create a fake catalog of sources
 
 n_pix = 1024
 n_sources = 1024*5
 positions = np.random.uniform(0, n_pix, size=(2, n_sources))
 fluxes = np.random.uniform(1, 10, n_sources)
+sigma = 10 # pixels
 
-image = gen_psffield(positions, fluxes, n_pix, kernel=Gaussian2DKernel(10), factor=4) * u.Jy / u.beam
+image = gen_psffield(positions, fluxes, n_pix, kernel=Gaussian2DKernel(sigma), factor=4) * u.Jy / u.beam
 
 # %%
 # Compute P(k)
@@ -83,7 +84,7 @@ image = gen_psffield(positions, fluxes, n_pix, kernel=Gaussian2DKernel(10), fact
 #
 # Compute power spectra of each images
 #
-powspec, k = power_spectral_density(image, res=res, range='tight-log', bins=auto)
+powspec, k = power_spectral_density(image, res=res, range='tight', bins='auto')
 
 k_mid = np.mean(u.Quantity([k[1:], k[:-1]]), axis=0)
 
@@ -94,5 +95,11 @@ k_mid = np.mean(u.Quantity([k[1:], k[:-1]]), axis=0)
 fig, axes = plt.subplots(ncols=2)
 axes[0].imshow(image.value, origin='lower')
 axes[1].loglog(k_mid, powspec)
+
+def gaussian_pk(k, sigma):
+    return np.exp(- (np.pi * k)**2 * (2 * sigma**2) * 2 )
+
+axes[1].plot(k_mid, gaussian_pk(k_mid, sigma * res) * powspec.max())
+axes[1].set_ylim(np.min(powspec), np.max(powspec))
 
 fig.show()
