@@ -70,8 +70,8 @@ plt.show()
 #
 # Create a fake catalog of sources
 
-n_pix = 1024
-n_sources = 1024*5
+n_pix = 512
+n_sources = 128*5
 positions = np.random.uniform(0, n_pix, size=(2, n_sources))
 fluxes = np.random.uniform(1, 10, n_sources)
 sigma = 10 # pixels
