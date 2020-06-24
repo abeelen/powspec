@@ -47,6 +47,8 @@ def gen_pkfield(npix=32, alpha=-11.0 / 3, fknee=1, res=1):
 def gen_psffield(positions, fluxes=None, shape=(32, 32), kernel=None, factor=None):
     """Generate a point spread function field given a catalog of point source.
 
+    Fourier method
+
     Parameters
     ----------
     positions : array_like, shape (2, M)
@@ -104,5 +106,64 @@ def gen_psffield(positions, fluxes=None, shape=(32, 32), kernel=None, factor=Non
         array = convolve_fft(array, kernel, normalize_kernel=False, boundary="wrap") / factor ** 2
 
     # Average rebinning onto the input shape
+    array = array.reshape((shape[0], factor, shape[1], factor)).sum(-1).sum(1)
+    return array
+
+
+def gen_psffield_direct(positions, fluxes=None, shape=(32, 32), kernel=None, factor=None):
+    """Generate a point spread function field given a catalog of point source.
+
+    Direct method
+
+    Parameters
+    ----------
+    positions : array_like, shape (2, M)
+        x, y positions in pixel coordinates
+    fluxes : array_like, shape (M,)
+        corresponding peak fluxes
+    shape : int or [int, int], optional
+        the output image shape
+    kernel : ~astropy.convolution.Kernel2D, optional
+        the 2D kernel to be used for the PSF
+    factor : [int], optional
+        a overpixelization factor used for the projection before smoothing, by default None
+
+    Returns
+    -------
+    array : ndarray, shape(nx, ny)
+        The corresponding map
+    """
+    if factor is None:
+        factor = 1
+    if fluxes is None:
+        fluxes = np.ones(positions.shape[1])
+
+    if isinstance(shape, (int, np.int)):
+        shape = [shape, shape]
+
+    _shape = np.array(shape) * factor
+    _positions = (np.asarray(positions) + 0.5) * factor - 0.5
+
+    if kernel is not None:
+        # Upscale the kernel with factor
+        kernel = deepcopy(kernel)
+        for param in ["x_stddev", "y_stddev", "width", "radius", "radius_in"]:
+            if param in kernel._model.param_names:
+                getattr(kernel._model, param).value *= factor
+
+        Kernel2D.__init__(
+            kernel,
+            x_size=_round_up_to_odd_integer(kernel.shape[1] * factor),
+            y_size=_round_up_to_odd_integer(kernel.shape[0] * factor),
+        ),
+
+    xx, yy = np.meshgrid(np.arange(_shape[1]), np.arange(_shape[0]))
+    array = np.zeros(_shape)
+    for position, flux in zip(positions.T, fluxes):
+        kernel._model.x_mean = position[0]
+        kernel._model.y_mean = position[1]
+        kernel._model.amplitude = flux
+        array += kernel._model(xx, yy)
+
     array = array.reshape((shape[0], factor, shape[1], factor)).sum(-1).sum(1)
     return array
