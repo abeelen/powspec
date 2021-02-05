@@ -16,7 +16,9 @@ Build and coverage status
    :target: https://travis-ci.org/abeelen/powspec
 .. |Coverage Status| image:: https://coveralls.io/repos/abeelen/powspec/badge.svg?branch=master
    :target: https://coveralls.io/r/abeelen/powspec?branch=master
-	    
+.. image:: https://zenodo.org/badge/259882655.svg
+   :target: https://zenodo.org/badge/latestdoi/259882655
+
 License
 -------
 
