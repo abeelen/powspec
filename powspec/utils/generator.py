@@ -142,7 +142,7 @@ def gen_psffield_direct(positions, fluxes=None, shape=(32, 32), kernel=None, fac
         shape = [shape, shape]
 
     _shape = np.array(shape) * factor
-    _positions = (np.asarray(positions) + 0.5) * factor - 0.5
+    # _positions = (np.asarray(positions) + 0.5) * factor - 0.5
 
     if kernel is not None:
         # Upscale the kernel with factor
