@@ -6,8 +6,12 @@ stages:
 
 tests:
   stage: test
-  script: tox -e test
+  script:
+    - pip install tox
+    - tox -e test
 
 lint:
   stage: test
-  script: tox -e codestyle
+  script: 
+    - pip install tox
+    - tox -e codestyle
