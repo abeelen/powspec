@@ -247,7 +247,7 @@ def cross_spectral_density(img1, img2, res=1, bins=100, range=None, apod_size=No
     # https://en.wikipedia.org/wiki/Spectral_density
     # Note that the factor 2 is accounted for the fact that we count each
     # frequency twice...
-    pow_sqr = np.absolute(np.fft.fft2(img1) * np.conjugate(np.fft.fft2(img2)) * res ** 2 / (npix_x * npix_y))
+    pow_sqr = np.real(np.fft.fft2(img1) * np.conjugate(np.fft.fft2(img2)) * res ** 2 / (npix_x * npix_y))
 
     # Define corresponding fourier modes
     u_freq = np.fft.fftfreq(npix_x, d=res)
