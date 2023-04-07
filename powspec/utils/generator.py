@@ -73,7 +73,7 @@ def gen_psffield(positions, fluxes=None, shape=(32, 32), kernel=None, factor=Non
     if fluxes is None:
         fluxes = np.ones(positions.shape[1])
 
-    if isinstance(shape, (int, np.int)):
+    if isinstance(shape, int):
         shape = [shape, shape]
 
     _shape = np.array(shape) * factor
@@ -138,7 +138,7 @@ def gen_psffield_direct(positions, fluxes=None, shape=(32, 32), kernel=None, fac
     if fluxes is None:
         fluxes = np.ones(positions.shape[1])
 
-    if isinstance(shape, (int, np.int)):
+    if isinstance(shape, int):
         shape = [shape, shape]
 
     _shape = np.array(shape) * factor
