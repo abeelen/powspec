@@ -1,4 +1,4 @@
-Copyright (c) 2020, Alexandre Beelen
+Copyright (c) 2023, Alexandre Beelen, Mathilde Van Cuyck
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,

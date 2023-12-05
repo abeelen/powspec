@@ -19,15 +19,15 @@ Build and coverage status
 .. image:: https://zenodo.org/badge/259882655.svg
    :target: https://zenodo.org/badge/latestdoi/259882655
 
-License
+
+	    License
 -------
 
-This project is Copyright (c) Alexandre Beelen and licensed under
+This project is Copyright (c) Alexandre Beelen, Mathilde Van Cuyck and licensed under
 the terms of the BSD 3-Clause license. This package is based upon
-the `Astropy package template <https://github.com/astropy/package-template>`_
-which is licensed under the BSD 3-clause license. See the licenses folder for
+the `Openastronomy packaging guide <https://github.com/OpenAstronomy/packaging-guide>`_
+which is licensed under the BSD 3-clause licence. See the licenses folder for
 more information.
-
 
 Contributing
 ------------
